@@ -3,11 +3,11 @@ FROM nginx:1.17.8-alpine
 EXPOSE 8000
 CMD ["/sbin/entrypoint.sh"]
 
-ARG cachet_ver
+ARG okazanta_ver
 ARG archive_url
 
-ENV cachet_ver ${cachet_ver:-2.4}
-ENV archive_url ${archive_url:-https://github.com/cachethq/Cachet/archive/${cachet_ver}.tar.gz}
+ENV okazanta_ver ${okazanta_ver:-v2.3.18}
+ENV archive_url ${archive_url:-https://github.com/Okazanta/Okazanta-core/archive/${okazanta_ver}.tar.gz}
 
 ENV COMPOSER_VERSION 1.9.0
 
@@ -85,13 +85,11 @@ RUN wget https://getcomposer.org/installer -O /tmp/composer-setup.php && \
 WORKDIR /var/www/html/
 USER 1001
 
-RUN wget ${archive_url} && \
-    tar xzf ${cachet_ver}.tar.gz --strip-components=1 && \
-    chown -R www-data:root /var/www/html && \
-    rm -r ${cachet_ver}.tar.gz && \
+RUN git clone --depth 1 --branch ${okazanta_ver} --single-branch https://github.com/Okazanta/Okazanta-core.git /var/www/html && \
     php /bin/composer.phar global require "hirak/prestissimo:^0.3" && \
     php /bin/composer.phar install -o && \
     rm -rf bootstrap/cache/*
+
 
 COPY conf/php-fpm-pool.conf /etc/php7/php-fpm.d/www.conf
 COPY conf/supervisord.conf /etc/supervisor/supervisord.conf

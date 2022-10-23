@@ -9,11 +9,11 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     restart: always
-  cachet:
+  okazanta:
     build:
       context: .
       args:
-        - cachet_ver=2.4
+        - okazanta_ver=2.4
     ports:
       - 80:8000
     links:
