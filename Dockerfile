@@ -5,9 +5,10 @@ CMD ["/sbin/entrypoint.sh"]
 
 ARG okazanta_ver
 ARG archive_url
+ARG okazanta_repo
 
-ENV okazanta_ver ${okazanta_ver:-v2.3.18}
-ENV archive_url ${archive_url:-https://github.com/Okazanta/Okazanta-core/archive/${okazanta_ver}.tar.gz}
+ENV okazanta_ver ${okazanta_ver:-2.4}
+ENV archive_url ${archive_url:-https://github.com/global-office/okazanta-legacy/archive/${okazanta_ver}.tar.gz}
 
 ENV COMPOSER_VERSION 1.9.0
 
@@ -85,7 +86,7 @@ RUN wget https://getcomposer.org/installer -O /tmp/composer-setup.php && \
 WORKDIR /var/www/html/
 USER 1001
 
-RUN git clone --depth 1 --branch ${okazanta_ver} --single-branch https://github.com/Okazanta/Okazanta-core.git /var/www/html && \
+RUN git clone --depth 1 --branch ${okazanta_ver} --single-branch ${okazanta_repo:-} /var/www/html && \
     php /bin/composer.phar global require "hirak/prestissimo:^0.3" && \
     php /bin/composer.phar install -o && \
     rm -rf bootstrap/cache/*
