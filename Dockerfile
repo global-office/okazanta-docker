@@ -86,7 +86,7 @@ RUN wget https://getcomposer.org/installer -O /tmp/composer-setup.php && \
 WORKDIR /var/www/html/
 USER 1001
 
-RUN git clone --depth 1 --branch ${okazanta_ver} --single-branch ${okazanta_repo:-} /var/www/html && \
+RUN git clone --depth 1 --branch ${okazanta_ver} --single-branch ${okazanta_repo:-https://github.com/global-office/okazanta-legacy.git} /var/www/html && \
     php /bin/composer.phar global require "hirak/prestissimo:^0.3" && \
     php /bin/composer.phar install -o && \
     rm -rf bootstrap/cache/*
